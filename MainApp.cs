@@ -1,15 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace CaseStudy
 {
@@ -23,11 +14,11 @@ namespace CaseStudy
 
             Console.WriteLine("1\tYoutubeApp");
             Console.WriteLine("2\tJobApp");
-            Console.WriteLine("3\tShopApp"); 
+            Console.WriteLine("3\tShopApp");
 
             ConsoleKeyInfo choice = Console.ReadKey();
-            switch(choice.KeyChar)
-            { 
+            switch (choice.KeyChar)
+            {
                 case '1':
                     app.YoutubeApp();
                     break;
@@ -40,14 +31,19 @@ namespace CaseStudy
             }
 
             Console.ReadLine();
-            driver.Close();
+            // driver.Close();
         }
 
         void YoutubeApp()
         {
-            driver = new ChromeDriver();
-            driver.Url = "http://www.youtube.com";
-            Console.WriteLine("YOUTUBE");
+            Console.Clear();
+
+            YoutubeApp youtubeApp = new YoutubeApp();
+            youtubeApp.Search();
+            // youtubeApp.AcceptCookies();
+            // youtubeApp.SetFilters();
+            youtubeApp.GetTopFive();
+            youtubeApp.Close();
         }
 
         void JobApp()
