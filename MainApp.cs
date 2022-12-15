@@ -48,9 +48,13 @@ namespace CaseStudy
 
         void JobApp()
         {
-            driver = new ChromeDriver();
-            driver.Url = "https://www.ictjob.be";
-            Console.WriteLine("JOB");
+            Console.Clear();
+
+            JobApp jobApp = new JobApp();
+            jobApp.Search();
+            jobApp.Sort();
+            jobApp.GetTopFive();
+            jobApp.Close();
         }
 
         void ShopApp()

@@ -16,20 +16,18 @@ namespace CaseStudy
 
         public void Search()
         {
-            Console.WriteLine("What do you want to search for?");
+            Console.WriteLine("What do you want to search for on Youtube?");
             search = Console.ReadLine();
             url = "http://www.youtube.com/results?search_query=" + search.Replace(" ", "+") + "&sp=CAISAhAB";
 
             driver = new ChromeDriver();
             driver.Url = url;
-
         }
 
         public void AcceptCookies()
         {
             WaitForElement(".//*[@aria-label='Accept the use of cookies and other data for the purposes described']").Click();
         }
-
 
         public void SetFilters()
         {
@@ -50,7 +48,6 @@ namespace CaseStudy
             for (int i = 0; i < 5; i++)
             {
                 string xpath = "//*[@id=\"contents\"]/ytd-video-renderer[" + (i + 1) + "]";
-
                 WaitForElement(xpath);
                 topFive.Add(driver.FindElement(By.XPath(xpath)));
             }
