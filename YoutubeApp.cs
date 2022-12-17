@@ -12,12 +12,12 @@ namespace CaseStudy
     internal class YoutubeApp
     {
         IWebDriver driver;
-        string url, search;
+        string url;
 
         public void Search()
         {
             Console.WriteLine("What do you want to search for on Youtube?");
-            search = Console.ReadLine();
+            string search = Console.ReadLine();
             url = "http://www.youtube.com/results?search_query=" + search.Replace(" ", "+") + "&sp=CAISAhAB";
 
             driver = new ChromeDriver();
@@ -48,8 +48,8 @@ namespace CaseStudy
             for (int i = 0; i < 5; i++)
             {
                 string xpath = "//*[@id=\"contents\"]/ytd-video-renderer[" + (i + 1) + "]";
-                WaitForElement(xpath);
-                topFive.Add(driver.FindElement(By.XPath(xpath)));
+                IWebElement video = WaitForElement(xpath);
+                topFive.Add(video);
             }
 
             // TODO MAKE INTO 1 FOR LOOP DEPENDING ON CSV AND JSON USAGE
@@ -58,8 +58,7 @@ namespace CaseStudy
                 string title = video.FindElement(By.XPath(".//*[@id='video-title']")).GetAttribute("title");
                 string link = video.FindElement(By.XPath(".//a")).GetAttribute("href");
                 string uploader = video.FindElement(By.XPath(".//*[@id='channel-name']//a")).GetAttribute("innerText");
-
-                Console.WriteLine(title);
+                string views = video.FindElement(By.XPath(".//*[@id=\"metadata-line\"]/span[1]")).Text;
             }
         }
 

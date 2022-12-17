@@ -59,9 +59,12 @@ namespace CaseStudy
 
         void ShopApp()
         {
-            driver = new ChromeDriver();
-            driver.Url = "https://www.coolblue.be/nl";
-            Console.WriteLine("SHOP");
+            Console.Clear();
+
+            ShopApp shopApp = new ShopApp();
+            shopApp.Search();
+            shopApp.GetTopFive();
+            shopApp.WriteOutput();
         }
     }
 }

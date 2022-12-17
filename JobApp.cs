@@ -12,13 +12,13 @@ namespace CaseStudy
     internal class JobApp
     {
         IWebDriver driver;
-        string url, search;
+        string url;
         IWebElement searchResultElement;
             
         public void Search()
         {
             Console.WriteLine("What job keyword do you want to search for?");
-            search = Console.ReadLine();
+            string search = Console.ReadLine();
             url = "https://www.ictjob.be/en/search-it-jobs?keywords=" + search.Replace(" ", "+");
 
             driver = new ChromeDriver();
@@ -60,9 +60,6 @@ namespace CaseStudy
                 string company = job.FindElement(By.ClassName("job-company")).Text;
                 string location = job.FindElement(By.ClassName("job-location")).Text;
                 string keywords = job.FindElement(By.ClassName("job-keywords")).Text;
-
-                Console.WriteLine(location);
-                Console.WriteLine(keywords);
             }
         }
 
