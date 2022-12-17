@@ -40,8 +40,6 @@ namespace CaseStudy
 
             YoutubeApp youtubeApp = new YoutubeApp();
             youtubeApp.Search();
-            // youtubeApp.AcceptCookies();
-            // youtubeApp.SetFilters();
             youtubeApp.GetTopFive();
             youtubeApp.WriteOutput();
             youtubeApp.Close();
@@ -55,6 +53,7 @@ namespace CaseStudy
             jobApp.Search();
             jobApp.Sort();
             jobApp.GetTopFive();
+            jobApp.WriteOutput();
             jobApp.Close();
         }
 

@@ -1,24 +1,23 @@
-﻿using OpenQA.Selenium;
+﻿using Newtonsoft.Json;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
-using System.IO.Ports;
-using System.Linq;
+using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CaseStudy
 {
     internal class JobApp
     {
         IWebDriver driver;
-        string url;
-        IWebElement searchResultElement;
-            
+        string url, search;
+        List<Job> results = new List<Job>();
+        
         public void Search()
         {
             Console.WriteLine("What job keyword do you want to search for?");
-            string search = Console.ReadLine();
+            search = Console.ReadLine();
             url = "https://www.ictjob.be/en/search-it-jobs?keywords=" + search.Replace(" ", "+");
 
             driver = new ChromeDriver();
@@ -27,12 +26,13 @@ namespace CaseStudy
 
         public void Sort()
         {
-            searchResultElement = WaitForElement("//*[@id=\"search-result\"]");
-            driver.FindElement(By.XPath("//*[@id=\"search-result\"]//a[@id=\"sort-by-date\"]")).Click();
-            
-            // Prevent Selenium from instantly checking the opacity (it is our trigger to check if the page loaded, if opacity = 1 it means the page is loaded, while it's loading the opacity = 0.5)
             System.Threading.Thread.Sleep(1000);
-            while (driver.FindElement(By.XPath("//*[@id=\"search-result\"]//div[@id=\"search-result-body\"]")).GetCssValue("opacity").Equals("0.5"))
+            driver.FindElement(By.XPath("//*[@id='search-result']//a[@id='sort-by-date']")).Click();
+            
+            // Prevent Selenium from instantly checking the opacity after clicking the button (it is our trigger
+            // to check if the page loaded if opacity = 1 it means the page is loaded, while it's loading the opacity = 0.5)
+            System.Threading.Thread.Sleep(1000);
+            while (driver.FindElement(By.XPath("//*[@id='search-result']//div[@id='search-result-body']")).GetCssValue("opacity").Equals("0.5"))
             {
                 System.Threading.Thread.Sleep(1);
             }
@@ -41,58 +41,80 @@ namespace CaseStudy
 
         public void GetTopFive()
         {
-            List<IWebElement> topFive = new List<IWebElement>();
             for (int i = 0; i < 6; i++)
             {
-                string xpath = "//*[@id=\"search-result\"]//ul/li[" + (i + 1) + "]";
-                IWebElement job = WaitForElement(xpath);
+                string xpath = "//*[@id='search-result']//ul/li[" + (i + 1) + "]";
+                IWebElement job = driver.FindElement(By.XPath(xpath));
+
                 if (job.GetAttribute("class").Equals("search-item  clearfix"))
                 {
-                    topFive.Add(job);
-                }
-            }
+                    string title = job.FindElement(By.ClassName("job-title")).Text;
+                    string link = job.FindElement(By.ClassName("job-title")).GetAttribute("href");
+                    string company = job.FindElement(By.ClassName("job-company")).Text;
+                    string location = job.FindElement(By.ClassName("job-location")).Text;
+                    string keywords = job.FindElement(By.ClassName("job-keywords")).Text;
 
-            // TODO MAKE INTO 1 FOR LOOP DEPENDING ON CSV AND JSON USAGE
-            foreach (IWebElement job in topFive)
-            {
-                string title = job.FindElement(By.ClassName("job-title")).Text;
-                string link = job.FindElement(By.ClassName("job-title")).GetAttribute("href");
-                string company = job.FindElement(By.ClassName("job-company")).Text;
-                string location = job.FindElement(By.ClassName("job-location")).Text;
-                string keywords = job.FindElement(By.ClassName("job-keywords")).Text;
+                    results.Add(new Job(title, link, company, location, keywords));
+                }
             }
         }
 
-        private IWebElement WaitForElement(string regex)
+        public void WriteOutput()
         {
-            for (int attempts = 0; attempts < 30; attempts++)
+            if (!Directory.Exists("outputResults/JobApp"))
             {
-                try
-                {
-                    return driver.FindElement(By.XPath(regex));
-                }
-                catch (Exception e)
-                {
-                    //Console.WriteLine(e);
-                }
-                System.Threading.Thread.Sleep(200);
+                Directory.CreateDirectory("outputResults/JobApp");
             }
-            return null;
+
+            WriteCSV();
+            WriteJSON();
         }
 
         public void WriteCSV()
         {
+            string separator = ";";
+            StringBuilder stringcsv = new StringBuilder();
+            string[] headings = { "Title", "Company", "Location", "Keywords", "Url" };
+            stringcsv.AppendLine(string.Join(separator, headings));
 
+            foreach (Job job in results)
+            {
+                String[] newLine = { job.title, job.company, job.location, job.keywords, job.url };
+                stringcsv.AppendLine(string.Join(separator, newLine));
+            }
+
+            File.WriteAllText("./outputResults/JobApp/results.csv", stringcsv.ToString());
         }
 
         public void WriteJSON()
         {
+            var obj = new
+            {
+                keyword = search,
+                result = results
+            };
 
+            string stringjson = JsonConvert.SerializeObject(obj, Formatting.Indented);
+            File.WriteAllText("./outputResults/JobApp/results.json", stringjson);
         }
 
         public void Close()
         {
             driver.Close();
+        }
+    }
+
+    class Job
+    {
+        public string title, url, company, location, keywords;
+
+        public Job(string title, string url, string company, string location, string keywords)
+        {
+            this.title = title;
+            this.url = url;
+            this.company = company;
+            this.location = location;
+            this.keywords = keywords;
         }
     }
 }
