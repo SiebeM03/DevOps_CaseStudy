@@ -36,8 +36,9 @@ namespace CaseStudy
                 string link = video.FindElement(By.XPath(".//a")).GetAttribute("href");
                 string uploader = video.FindElement(By.XPath(".//*[@id='channel-name']//a")).GetAttribute("innerText");
                 string views = video.FindElement(By.XPath(".//*[@id='metadata-line']/span[1]")).Text;
+                string uploaded = video.FindElement(By.XPath(".//*[@id='metadata-line']/span[2]")).Text;
 
-                results.Add(new Video(title, link, uploader, views));
+                results.Add(new Video(title, link, uploader, views, uploaded));
             }
         }
 
@@ -56,12 +57,12 @@ namespace CaseStudy
         {
             string separator = ";";
             StringBuilder stringcsv = new StringBuilder();
-            string[] headings = { "Title", "Uploader", "Views", "Url" };
+            string[] headings = { "Title", "Uploader", "Views", "Upload Time", "Url" };
             stringcsv.AppendLine(string.Join(separator, headings));
 
             foreach (Video video in results)
             {
-                String[] newLine = { video.title, video.uploader, video.views, video.url };
+                String[] newLine = { video.title, video.uploader, video.views, video.uploaded, video.url };
                 stringcsv.AppendLine(string.Join(separator, newLine));
             }
 
@@ -77,7 +78,6 @@ namespace CaseStudy
             };
 
             string stringjson = JsonConvert.SerializeObject(obj, Formatting.Indented);
-
             File.WriteAllText("./outputResults/YoutubeApp/results.json", stringjson);
         }
 
@@ -89,14 +89,15 @@ namespace CaseStudy
 
     class Video
     {
-        public string title, url, uploader, views;
+        public string title, url, uploader, views, uploaded;
 
-        public Video(string title, string url, string uploader, string views)
+        public Video(string title, string url, string uploader, string views, string uploaded)
         {
             this.title = title;
             this.url = url;
             this.uploader = uploader;
             this.views = views;
+            this.uploaded = uploaded;
         }
     }
 }

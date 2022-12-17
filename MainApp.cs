@@ -31,7 +31,7 @@ namespace CaseStudy
             }
 
             Console.ReadLine();
-            // driver.Close();
+            driver.Close();
         }
 
         void YoutubeApp()
