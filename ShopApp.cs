@@ -152,8 +152,6 @@ namespace CaseStudy
                     }
                 }
 
-                Console.WriteLine(name + "\n" + formerPrice + "\n" + currentPrice);
-
                 results.Add(new Laptop(name, url, formerPrice, currentPrice, highlights));
             }
         }
@@ -216,7 +214,6 @@ namespace CaseStudy
             };
 
             string stringjson = JsonConvert.SerializeObject(obj, Formatting.Indented);
-            Console.WriteLine(stringjson);
 
             File.WriteAllText("./outputResults/ShopApp/results.json", stringjson);
         }

@@ -43,6 +43,7 @@ namespace CaseStudy
             // youtubeApp.AcceptCookies();
             // youtubeApp.SetFilters();
             youtubeApp.GetTopFive();
+            youtubeApp.WriteOutput();
             youtubeApp.Close();
         }
 
@@ -65,6 +66,7 @@ namespace CaseStudy
             shopApp.Search();
             shopApp.GetTopFive();
             shopApp.WriteOutput();
+            shopApp.Close();
         }
     }
 }
