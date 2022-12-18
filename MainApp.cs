@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using System;
 
 namespace CaseStudy
@@ -29,9 +28,6 @@ namespace CaseStudy
                     app.ShopApp();
                     break;
             }
-
-            Console.ReadLine();
-            driver.Close();
         }
 
         void YoutubeApp()

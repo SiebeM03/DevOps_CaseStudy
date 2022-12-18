@@ -13,12 +13,12 @@ namespace CaseStudy
         IWebDriver driver;
         string url, search;
         List<Job> results = new List<Job>();
-        
+
         public void Search()
         {
             Console.WriteLine("What job keyword do you want to search for?");
             search = Console.ReadLine();
-            url = "https://www.ictjob.be/en/search-it-jobs?keywords=" + search.Replace(" ", "+");
+            url = "https://www.ictjob.lu/en/search-it-jobs?keywords=" + search.Replace(" ", "+");
 
             driver = new ChromeDriver();
             driver.Url = url;
@@ -28,7 +28,7 @@ namespace CaseStudy
         {
             System.Threading.Thread.Sleep(1000);
             driver.FindElement(By.XPath("//*[@id='search-result']//a[@id='sort-by-date']")).Click();
-            
+
             // Prevent Selenium from instantly checking the opacity after clicking the button (it is our trigger
             // to check if the page loaded if opacity = 1 it means the page is loaded, while it's loading the opacity = 0.5)
             System.Threading.Thread.Sleep(1000);

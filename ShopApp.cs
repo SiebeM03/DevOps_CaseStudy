@@ -1,10 +1,10 @@
-﻿using OpenQA.Selenium;
+﻿using Newtonsoft.Json;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
 using System.IO;
+using System.Text;
 
 namespace CaseStudy
 {
@@ -35,7 +35,7 @@ namespace CaseStudy
 
         List<Laptop> results = new List<Laptop>();
 
-    public void Search()
+        public void Search()
         {
             url = "https://www.coolblue.be/nl/aanbieding/producttype:laptops";
 
@@ -207,5 +207,5 @@ namespace CaseStudy
             this.currentPrice = currentPrice;
             this.highlights = highlights;
         }
-    } 
+    }
 }
