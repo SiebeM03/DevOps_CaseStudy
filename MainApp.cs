@@ -1,5 +1,4 @@
-﻿using OpenQA.Selenium;
-using System;
+﻿using System;
 
 namespace CaseStudy
 {
@@ -26,6 +25,7 @@ namespace CaseStudy
                     app.ShopApp();
                     break;
             }
+            Console.ReadLine();
         }
 
         void YoutubeApp()
