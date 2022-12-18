@@ -108,15 +108,6 @@ namespace CaseStudy
             this.uploaded = uploaded;
         }
 
-        public Video(string title, string url, string uploader, string uploaded, Dictionary<string, int> viewsList)
-        {
-            this.title = title;
-            this.url = url;
-            this.uploader = uploader;
-            this.uploaded = uploaded;
-            this.viewsList = viewsList;
-        }
-
         int viewsStringToInt(string str)
         {
             string viewsString = str.Split(' ')[0];

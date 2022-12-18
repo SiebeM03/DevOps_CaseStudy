@@ -5,8 +5,6 @@ namespace CaseStudy
 {
     class MainApp
     {
-        static IWebDriver driver;
-
         static void Main(string[] args)
         {
             MainApp app = new MainApp();
